@@ -10,10 +10,7 @@ __pycache__/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
-medias/__sized__
-medias/post_images
-medias/profile_pictures/*
-!medias/profile_pictures/default.png
+medias
 staticfiles
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/

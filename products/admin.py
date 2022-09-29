@@ -4,7 +4,7 @@ from django.contrib import admin
 
 from .models import Product, Variation, Tag, ProductImage
 
-admin.register(Tag)
-admin.register(Product)
-admin.register(Variation)
-admin.register(ProductImage)
+admin.site.register(Tag)
+admin.site.register(Product)
+admin.site.register(Variation)
+admin.site.register(ProductImage)

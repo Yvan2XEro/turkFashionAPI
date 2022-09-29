@@ -51,6 +51,9 @@ class Product(models.Model):
     tax = models.DecimalField(
         max_digits=4, decimal_places=2, null=True, blank=True)
 
+    def __str__(self) -> str:
+        return str(self.pk) + '- ' + self.title
+
 
 class Variation(models.Model):
     featured_image = VersatileImageField(
@@ -58,11 +61,12 @@ class Variation(models.Model):
     description = models.TextField(max_length=4096)
     original_price = models.DecimalField(
         max_digits=10, decimal_places=2, blank=True, null=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(
+        max_digits=10, decimal_places=2, blank=True, null=True)
     tax = models.DecimalField(
         max_digits=4, decimal_places=2, null=True, blank=True)
-    product = models.ManyToManyField(
-        Product, blank=True, related_name="variations")
+    product = models.ForeignKey(
+        Product, blank=True, related_name="variations", on_delete=models.CASCADE)
 
 
 products_galeries_path = 'products_galeries'
