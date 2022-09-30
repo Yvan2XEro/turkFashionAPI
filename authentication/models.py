@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.conf import settings
@@ -72,3 +73,16 @@ class User(AbstractUser):
             "refresh": str(refresh),
             "access": str(refresh.access_token)
         }
+
+
+class Address(models.Model):
+    country = models.CharField(max_length=32, blank=True, null=True)
+    city = models.CharField(max_length=32, blank=True, null=True)
+    postal_code = models.CharField(max_length=32, blank=True, null=True)
+    house_address = models.CharField(max_length=32, blank=True, null=True)
+    email = models.EmailField(max_length=32, blank=True, null=True)
+    default = models.BooleanField(default=False, blank=True)
+    user = models.ForeignKey(
+        User, related_name='addresses', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

@@ -1,18 +1,18 @@
 from rest_framework import generics, status
 
 from products.models import Product, ProductImage, Variation
-from .serializers import ProductImageSerializer, ProductSerialiser, VariationSerializer
+from .serializers import ProductImageSerializer, ProductSerializer, VariationSerializer
 
 # Create your views here.
 
 
 class ProductsListAPIView(generics.ListCreateAPIView):
-    serializer_class = ProductSerialiser
+    serializer_class = ProductSerializer
     queryset = Product.objects.all()
 
 
 class ProductRetrieveAPIView(generics.RetrieveAPIView):
-    serializer_class = ProductSerialiser
+    serializer_class = ProductSerializer
     queryset = Product.objects.all()
 
 

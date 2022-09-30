@@ -11,7 +11,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class NewProductSerialiser(serializers.ModelSerializer):
+class NewProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
 
     author = UserSerializer(read_only=True)
@@ -40,7 +40,7 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
 
 
-class ProductSerialiser(serializers.ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = "__all__"
