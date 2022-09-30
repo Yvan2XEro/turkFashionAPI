@@ -1,4 +1,5 @@
-from rest_framework import generics, status
+from rest_framework import generics, status, filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 from products.models import Product, ProductImage, Variation
 from .serializers import ProductImageSerializer, ProductSerializer, VariationSerializer
@@ -8,6 +9,33 @@ from .serializers import ProductImageSerializer, ProductSerializer, VariationSer
 
 class ProductsListAPIView(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
+    filter_backends = [DjangoFilterBackend,
+                       filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = [
+        'title', 'description',
+        'id', 'slug', 'active',
+        'featured',
+        'original_price',
+        'price',
+        'tax',
+    ]
+    search_fields = [
+        'title', 'description',
+        'id', 'slug', 'active',
+        'featured',
+        'original_price',
+        'price',
+        'tax',
+    ]
+    ordering_fields = [
+        'title', 'description',
+        'id', 'slug', 'active',
+        'featured',
+        'original_price',
+        'price',
+        'tax',
+        'created_at'
+    ]
     queryset = Product.objects.all()
 
 
