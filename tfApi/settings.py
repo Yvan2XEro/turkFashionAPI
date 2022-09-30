@@ -37,6 +37,7 @@ MEDIA_URL = '/medias/'
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -192,3 +193,9 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
 
 DEFAULT_PICTURE = os.environ.get(
     "DEFAULT_PROFILE_PICTURE", "default_lixjpz.png")
+
+# JAZZMIN_SETTINGS
+JAZZMIN_SETTINGS = {
+    "site_title": "Turck Fashion Admin",
+    "site_header": "Turck Fashion",
+}

@@ -1,4 +1,3 @@
-from statistics import mode
 from django.db import models
 from django.db.models import Q
 from versatileimagefield.fields import VersatileImageField, PPOIField
@@ -46,12 +45,18 @@ class Product(models.Model):
     featured = models.BooleanField(default=False)
     description = models.TextField(max_length=4096)
     original_price = models.DecimalField(
+        max_digits=10, decimal_places=2)
+    price = models.DecimalField(
         max_digits=10, decimal_places=2, blank=True, null=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
     tax = models.DecimalField(
         max_digits=4, decimal_places=2, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def featured_image_tag(self):
+        from django.utils.html import mark_safe
+        return mark_safe('<img src="{}" />'.format(self.featured_image.url))
 
     def __str__(self) -> str:
         return str(self.pk) + '- ' + self.title
