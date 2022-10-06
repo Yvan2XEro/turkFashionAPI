@@ -5,7 +5,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 
 
-from .models import User
+from .models import Address, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'email', 'password',
-                  'full_name',
+                  'full_name', 'tokens',
                   'date_joined', 'avatar',
                   ]
         extra_kwargs = {'password': {'write_only': True, }}
@@ -22,7 +22,22 @@ class UserSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        return User.objects.create_user(**validated_data)
+
+        User.objects.create_user(**validated_data)
+        email = validated_data.get('email')
+        password = validated_data.get('password')
+        user = auth.authenticate(email=email, password=password,)
+
+        # pdb.set_trace()
+        return {
+            "tokens": user.tokens(),
+            "email": user.email,
+            "id": user.id,
+            "email": user.email,
+            "full_name": user.full_name,
+            "date_joined": user.date_joined,
+            "avatar": user.avatar,
+        }
 
 
 class LoginSerializer(serializers.ModelSerializer):
@@ -101,3 +116,23 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     "Email already exists")
         return value
+
+
+# Address serializer
+class AddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        fields = "__all__"
+
+
+class AddressUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        fields = [
+            "country",
+            "city",
+            "postal_code",
+            "house_address",
+            "email",
+            "default",
+        ]

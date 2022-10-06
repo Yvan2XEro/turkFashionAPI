@@ -1,8 +1,8 @@
 from rest_framework import generics, status, filters
 from django_filters.rest_framework import DjangoFilterBackend
 
-from products.models import Product, ProductImage, Variation
-from .serializers import ProductImageSerializer, ProductSerializer, VariationSerializer
+from products.models import Product, ProductImage, Tag, Variation
+from .serializers import ProductImageSerializer, ProductSerializer, TagSerializer, VariationSerializer
 
 # Create your views here.
 
@@ -60,3 +60,13 @@ class GaleryProductAPIView(generics.ListAPIView):
         return ProductImage.objects.filter(
             product=self.kwargs['pk']
         )
+
+
+class TagListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = TagSerializer
+    queryset = Tag.objects.all()
+
+
+class TagRetriveAPIView(generics.RetrieveAPIView):
+    serializer_class = TagSerializer
+    queryset = Tag.objects.all()

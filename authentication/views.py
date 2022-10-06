@@ -1,3 +1,5 @@
+import pdb
+from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import generics, status, views
@@ -5,8 +7,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser
 
 
-from .serializers import LoginSerializer, SetProfileImageSerializer, UpdateProfileSerializer, UserSerializer
-from .models import User
+from .serializers import AddressSerializer, AddressUpdateSerializer, LoginSerializer, SetProfileImageSerializer, UpdateProfileSerializer, UserSerializer
+from .models import Address, User
 
 # Create your views here.
 
@@ -71,3 +73,44 @@ class ChangeProfilePictureAPIView(views.APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ListCreateAddressAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = AddressSerializer
+
+    def get_queryset(self):
+        return Address.objects.all().filter(user=self.request.user)
+
+    def post(self, request):
+        data = request.data
+        data['user'] = request.user.pk
+        serializer = self.serializer_class(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class RetrieveUpdate(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = AddressSerializer
+
+    def get_queryset(self):
+        return Address.objects.all().filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def put(self, request, pk):
+        address = get_object_or_404(Address, pk=pk)
+        data = request.data
+        address.country = data['country']
+        address.city = data['city']
+        address.postal_code = data['postal_code']
+        address.email = data['email']
+        address.default = data['default']
+        address.house_address = data['house_address']
+        serializer = AddressUpdateSerializer(address, data)
+        serializer.is_valid()
+        address.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)

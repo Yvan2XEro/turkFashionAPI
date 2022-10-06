@@ -66,6 +66,7 @@ class Variation(models.Model):
     featured_image = VersatileImageField(
         upload_to=featured_products_image_path, null=True, validators=[validate_image_extension, validate_image_size])
     description = models.TextField(max_length=4096)
+    title = models.CharField(max_length=120, blank=True, null=True)
     original_price = models.DecimalField(
         max_digits=10, decimal_places=2, blank=True, null=True)
     price = models.DecimalField(
