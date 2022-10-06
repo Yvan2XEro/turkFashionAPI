@@ -35,6 +35,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 MEDIA_ROOT = os.path.join(BASE_DIR, 'medias')
 MEDIA_URL = '/medias/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 # Application definition
 
 INSTALLED_APPS = [
